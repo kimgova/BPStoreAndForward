@@ -15,7 +15,7 @@ pipeline {
         }
         stage ('Artifactory configuration') {
             // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
-            server = Artifactory.server 'ArtifactoryProd'
+            server = Artifactory.server 'ArtifactoryDev'
             env.JAVA_HOME = "${tool 'IBM_java-x86_64-80'}"
             echo "${tool 'IBM_java-x86_64-80'}"
             rtMaven = Artifactory.newMavenBuild()
