@@ -1,9 +1,10 @@
 
-def server
-def buildInfo
-def rtMaven
+
 
 pipeline {
+    def server
+    def buildInfo
+    def rtMaven
     agent any
     stages {
     	stage('Checkout') {
@@ -13,7 +14,7 @@ pipeline {
 				echo "Checkout ready."
             }
         }
-        stage ('Artifactory configuration') {
+        stage ('Artifactory') {
             // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
             server = Artifactory.server 'ArtifactoryDev'
             env.JAVA_HOME = "${tool 'IBM_java-x86_64-80'}"
