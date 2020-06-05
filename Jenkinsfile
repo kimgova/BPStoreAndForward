@@ -2,6 +2,7 @@
 def server
 def buildInfo
 def rtMaven
+def hello = "Hello World"
 
 pipeline {
     agent any
@@ -11,11 +12,13 @@ pipeline {
                 checkout([$class: 'GitSCM', branches: [[name: '*/master']],
     				userRemoteConfigs: [[url: 'https://github.com/kimgova/BPStoreAndForward.git']]])
 				echo "Checkout ready."
+
             }
         }
         stage ('Artifactory') {
+            echo hello
             // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
-            server = Artifactory.newServer url: 'http://10.136.5.190:8081/artifactory', username: '', password: ''
+            server = Artifactory.newServer url: 'http://10.136.5.190:8081/artifactory'
             env.JAVA_HOME = "${tool 'IBM_java-x86_64-80'}"
             echo "${tool 'IBM_java-x86_64-80'}"
             rtMaven = Artifactory.newMavenBuild()
