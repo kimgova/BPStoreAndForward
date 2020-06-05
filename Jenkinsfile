@@ -1,4 +1,3 @@
-@Library("JenkinsSharedLibrary@master")_
 
 def server
 def buildInfo
