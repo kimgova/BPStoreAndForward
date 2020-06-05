@@ -1,5 +1,7 @@
 
-
+def server
+def buildInfo
+def rtMaven
 
 pipeline {
     agent any
@@ -13,7 +15,7 @@ pipeline {
         }
         stage ('Artifactory') {
             // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
-            def server = Artifactory.server 'ArtifactoryDev'
+            server = Artifactory.newServer url: 'http://10.136.5.190:8081/artifactory', username: '', password: ''
             env.JAVA_HOME = "${tool 'IBM_java-x86_64-80'}"
             echo "${tool 'IBM_java-x86_64-80'}"
             rtMaven = Artifactory.newMavenBuild()
@@ -22,7 +24,7 @@ pipeline {
             rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
             rtMaven.deployer.deployArtifacts = false // Disable artifacts deployment during Maven run
             rtMaven.opts = '-Xmx3096m'
-            def buildInfo = Artifactory.newBuildInfo()
+            buildInfo = Artifactory.newBuildInfo()
             echo "Artifactory ready."
         }
         stage('Build') {
