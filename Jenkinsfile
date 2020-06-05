@@ -1,3 +1,9 @@
+@Library("JenkinsSharedLibrary@master")_
+
+def server
+def buildInfo
+def rtMaven
+
 pipeline {
     agent any
     stages {
