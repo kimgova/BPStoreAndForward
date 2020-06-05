@@ -18,20 +18,21 @@ pipeline {
         stage ('Artifactory') {
             steps{
                 echo hello
+                 // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
+                server = Artifactory.newServer url: 'http://10.136.5.190:8081/artifactory'
+                env.JAVA_HOME = "${tool 'IBM_java-x86_64-80'}"
+                echo "${tool 'IBM_java-x86_64-80'}"
+                rtMaven = Artifactory.newMavenBuild()
+                rtMaven.tool = 'Maven_Local' // Tool name from Jenkins configuration
+                rtMaven.deployer releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local', server: server
+                rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
+                rtMaven.deployer.deployArtifacts = false // Disable artifacts deployment during Maven run
+                rtMaven.opts = '-Xmx3096m'
+                buildInfo = Artifactory.newBuildInfo()
                 echo "Artifactory ready."
             }
             
-            // Obtain an Artifactory server instance, defined in Jenkins --> Manage:
-            /*server = Artifactory.newServer url: 'http://10.136.5.190:8081/artifactory'
-            env.JAVA_HOME = "${tool 'IBM_java-x86_64-80'}"
-            echo "${tool 'IBM_java-x86_64-80'}"
-            rtMaven = Artifactory.newMavenBuild()
-            rtMaven.tool = 'Maven_Local' // Tool name from Jenkins configuration
-            rtMaven.deployer releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local', server: server
-            rtMaven.resolver releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot', server: server
-            rtMaven.deployer.deployArtifacts = false // Disable artifacts deployment during Maven run
-            rtMaven.opts = '-Xmx3096m'
-            buildInfo = Artifactory.newBuildInfo()*/
+           
             
         }
         stage('Build') {
